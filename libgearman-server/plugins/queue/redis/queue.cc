@@ -117,7 +117,7 @@ gearmand_error_t Hiredis::initialize()
 {
 
   int service_port= atoi(service.c_str());
-  char *service_host = server.c_str();
+  const char *service_host = server.c_str();
 
   if ((_redis= redisConnect(service_host, service_port)) == NULL)
   {
