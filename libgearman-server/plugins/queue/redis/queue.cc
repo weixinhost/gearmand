@@ -255,7 +255,9 @@ static gearmand_error_t _hiredis_replay(gearman_server_st *server, void *context
    
   gearmand_info("hiredis replay start");
 
-  redisReply *reply= (redisReply*)redisCommand(queue->redis(), "KEYS %s", GEARMAND_QUEUE_GEARMAND_DEFAULT_PREFIX);
+  redisReply *reply= (redisReply*)redisCommand(queue->redis(), "KEYS %s*", GEARMAND_QUEUE_GEARMAND_DEFAULT_PREFIX);
+
+
   if (reply == NULL)
   {
     return gearmand_gerror("Failed to call KEYS during QUEUE replay", GEARMAND_QUEUE_ERROR);
@@ -292,6 +294,8 @@ static gearmand_error_t _hiredis_replay(gearman_server_st *server, void *context
     {
       continue;
     }
+
+    printf("%s %.*s",function_name, get_reply->len,get_reply->str);
 
     (void)(add_fn)(server, add_context,
                    unique, strlen(unique),
